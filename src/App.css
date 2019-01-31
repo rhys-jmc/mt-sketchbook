@@ -15,7 +15,3 @@
   display: flex;
   flex-direction: column;
 }
-
-.ListItem {
-  padding: 4px;
-}

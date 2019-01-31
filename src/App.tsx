@@ -1,33 +1,22 @@
 import React, { Component, ChangeEvent, RefObject, MouseEvent } from "react";
-import Modal from "./Modal";
+import Modal, { CloseOpenModalFunction } from "./Modal";
+import PageListItem from "./PageListItem";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants";
+import { Page } from "./types";
 import "./App.css";
-
-const CANVAS_WIDTH = 500;
-const CANVAS_HEIGHT = 500;
-
-interface Page {
-  id: number;
-  imageData: ImageData;
-  label: string;
-}
 
 interface AppState {
   activePageId?: number;
   drawing: boolean;
-  open: boolean;
   newPage: string;
   pages: Page[];
 }
 
 class App extends Component<{}, AppState> {
-  state: AppState = { drawing: false, open: false, newPage: "", pages: [] };
+  state: AppState = { drawing: false, newPage: "", pages: [] };
 
   canvasRef: RefObject<HTMLCanvasElement> = React.createRef();
   inputRef: RefObject<HTMLInputElement> = React.createRef();
-
-  handleBackgroundClick = () => {
-    this.setState({ open: false });
-  };
 
   handleChange = (name: keyof AppState) => ({
     target: { value }
@@ -86,8 +75,8 @@ class App extends Component<{}, AppState> {
     }
   };
 
-  handleNewPageClick = () => {
-    this.setState({ open: true }, () => {
+  handleNewPageClick = (open: CloseOpenModalFunction) => () => {
+    open(() => {
       if (this.inputRef.current) {
         this.inputRef.current.focus();
       }
@@ -106,7 +95,7 @@ class App extends Component<{}, AppState> {
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (close: CloseOpenModalFunction) => () => {
     this.setState(
       state => {
         const lastPage = state.pages[state.pages.length - 1];
@@ -118,11 +107,11 @@ class App extends Component<{}, AppState> {
 
         return {
           newPage: "",
-          open: false,
           pages: [...state.pages, newPage]
         };
       },
       () => {
+        close();
         this.handlePageClick(this.state.pages.slice(-1)[0].id)();
       }
     );
@@ -159,34 +148,38 @@ class App extends Component<{}, AppState> {
       <div className="Container">
         <div>
           <div className="outline">
-            <button onClick={this.handleNewPageClick}>New Page</button>
             <Modal
-              onBackgroundClick={this.handleBackgroundClick}
-              open={this.state.open}
+              render={({ openModal: open }) => (
+                <button onClick={this.handleNewPageClick(open)}>
+                  New Page
+                </button>
+              )}
             >
-              <div className="Form">
-                <input
-                  type="text"
-                  value={this.state.newPage}
-                  onChange={this.handleChange("newPage")}
-                  ref={this.inputRef}
-                  required
-                />
-                <button onClick={this.handleSubmit}>Create New Page</button>
-              </div>
+              {({ closeModal: close }) => (
+                <div className="Form">
+                  <input
+                    type="text"
+                    value={this.state.newPage}
+                    onChange={this.handleChange("newPage")}
+                    ref={this.inputRef}
+                    required
+                  />
+                  <button onClick={this.handleSubmit(close)}>
+                    Create New Page
+                  </button>
+                </div>
+              )}
             </Modal>
           </div>
           <div className="outline">
             <ul>
               {this.state.pages.map(({ id, label }) => (
-                <li
+                <PageListItem
                   key={id}
-                  className={`ListItem${
-                    id === this.state.activePageId ? " active" : ""
-                  }`}
-                >
-                  <button onClick={this.handlePageClick(id)}>{label}</button>
-                </li>
+                  isActive={id === this.state.activePageId}
+                  label={label}
+                  onClick={this.handlePageClick(id)}
+                />
               ))}
             </ul>
           </div>
