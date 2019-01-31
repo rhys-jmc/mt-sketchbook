@@ -1,10 +1,5 @@
-import React, {
-  Component,
-  ReactNode,
-  ChangeEvent,
-  RefObject,
-  MouseEvent
-} from "react";
+import React, { Component, ChangeEvent, RefObject, MouseEvent } from "react";
+import Modal from "./Modal";
 import "./App.css";
 
 const CANVAS_WIDTH = 500;
@@ -15,31 +10,6 @@ interface Page {
   imageData: ImageData;
   label: string;
 }
-
-const Modal = ({
-  children,
-  onBackgroundClick,
-  open
-}: {
-  children: ReactNode;
-  onBackgroundClick(): void;
-  open: boolean;
-}) => (
-  <div
-    className="Modal"
-    style={open ? {} : { display: "none" }}
-    onClick={onBackgroundClick}
-  >
-    <div
-      onClick={event => {
-        event.stopPropagation();
-      }}
-      style={{ padding: 16, background: "white" }}
-    >
-      {children}
-    </div>
-  </div>
-);
 
 interface AppState {
   activePageId?: number;
@@ -66,23 +36,21 @@ class App extends Component<{}, AppState> {
   };
 
   handleMouseDown = ({ pageX, pageY }: MouseEvent<HTMLCanvasElement>) => {
-    if (this.canvasRef.current) {
-      const { offsetLeft, offsetTop } = this.canvasRef.current;
-      const context = this.canvasRef.current.getContext("2d");
+    const { offsetLeft, offsetTop } = this.currentCanvasRef;
+    const context = this.getCanvasContext();
 
-      if (context) {
-        this.setState({ drawing: true }, () => {
-          context.beginPath();
-          context.moveTo(pageX - offsetLeft, pageY - offsetTop);
-        });
-      }
+    if (context) {
+      this.setState({ drawing: true }, () => {
+        context.beginPath();
+        context.moveTo(pageX - offsetLeft, pageY - offsetTop);
+      });
     }
   };
 
   handleMouseMove = ({ pageX, pageY }: MouseEvent<HTMLCanvasElement>) => {
-    if (this.state.drawing && this.canvasRef.current) {
-      const { offsetLeft, offsetTop } = this.canvasRef.current;
-      const context = this.canvasRef.current.getContext("2d");
+    if (this.state.drawing) {
+      const { offsetLeft, offsetTop } = this.currentCanvasRef;
+      const context = this.getCanvasContext();
 
       if (context) {
         context.lineTo(pageX - offsetLeft, pageY - offsetTop);
@@ -92,34 +60,29 @@ class App extends Component<{}, AppState> {
   };
 
   handleMouseUp = () => {
-    if (this.canvasRef.current) {
-      const { width, height } = this.canvasRef.current;
-      const context = this.canvasRef.current.getContext("2d");
+    const context = this.getCanvasContext();
 
-      if (context) {
-        this.setState({ drawing: false }, () => {
-          context.closePath();
+    if (context) {
+      this.setState({ drawing: false }, () => {
+        context.closePath();
 
-          this.setState(({ pages, ...prevState }) => {
-            return {
-              ...prevState,
-              pages: [
-                ...pages.slice(0, prevState.activePageId || 0),
-                {
-                  ...pages[prevState.activePageId || 0],
-                  imageData: context.getImageData(
-                    0,
-                    0,
-                    CANVAS_WIDTH,
-                    CANVAS_HEIGHT
-                  )
-                },
-                ...pages.slice((prevState.activePageId || 0) + 1)
-              ]
-            };
-          });
+        this.setState(({ pages, ...prevState }) => {
+          const index = prevState.activePageId || 0;
+
+          const newPage = {
+            ...pages[index],
+            imageData: context.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+          };
+
+          const newPages = [
+            ...pages.slice(0, index),
+            newPage,
+            ...pages.slice(index + 1)
+          ];
+
+          return { ...prevState, pages: newPages };
         });
-      }
+      });
     }
   };
 
@@ -133,18 +96,12 @@ class App extends Component<{}, AppState> {
 
   handlePageClick = (id: number) => () => {
     this.setState({ activePageId: id }, () => {
-      if (this.canvasRef.current) {
-        const context = this.canvasRef.current.getContext("2d");
+      const { width, height } = this.currentCanvasRef;
+      const context = this.getCanvasContext();
 
-        if (context) {
-          context.clearRect(
-            0,
-            0,
-            this.canvasRef.current.width,
-            this.canvasRef.current.height
-          );
-          context.putImageData(this.state.pages[id].imageData, 0, 0);
-        }
+      if (context) {
+        context.clearRect(0, 0, width, height);
+        context.putImageData(this.state.pages[id].imageData, 0, 0);
       }
     });
   };
@@ -183,9 +140,23 @@ class App extends Component<{}, AppState> {
     return new ImageData(CANVAS_WIDTH, CANVAS_HEIGHT);
   };
 
+  getCanvasContext = () =>
+    this.canvasRef.current && this.canvasRef.current.getContext("2d");
+
+  get currentCanvasRef() {
+    return (
+      this.canvasRef.current || {
+        width: 0,
+        height: 0,
+        offsetLeft: 0,
+        offsetTop: 0
+      }
+    );
+  }
+
   render() {
     return (
-      <div style={{ display: "flex" }}>
+      <div className="Container">
         <div>
           <div className="outline">
             <button onClick={this.handleNewPageClick}>New Page</button>
@@ -193,7 +164,7 @@ class App extends Component<{}, AppState> {
               onBackgroundClick={this.handleBackgroundClick}
               open={this.state.open}
             >
-              <div style={{ display: "flex", flexDirection: "column" }}>
+              <div className="Form">
                 <input
                   type="text"
                   value={this.state.newPage}
@@ -210,8 +181,9 @@ class App extends Component<{}, AppState> {
               {this.state.pages.map(({ id, label }) => (
                 <li
                   key={id}
-                  className={id === this.state.activePageId ? "active" : ""}
-                  style={{ padding: 4 }}
+                  className={`ListItem${
+                    id === this.state.activePageId ? " active" : ""
+                  }`}
                 >
                   <button onClick={this.handlePageClick(id)}>{label}</button>
                 </li>
@@ -219,10 +191,10 @@ class App extends Component<{}, AppState> {
             </ul>
           </div>
         </div>
-        <div className="outline" style={{ flex: 1 }}>
+        <div className="CanvasContainer outline">
           {typeof this.state.activePageId !== "undefined" && (
             <canvas
-              style={{ border: "1px solid" }}
+              className="outline"
               width={CANVAS_WIDTH}
               height={CANVAS_HEIGHT}
               ref={this.canvasRef}
