@@ -75,8 +75,8 @@ class App extends Component<{}, AppState> {
     }
   };
 
-  handleNewPageClick = (open: CloseOpenModalFunction) => () => {
-    open(() => {
+  handleNewPageClick = (openModal: CloseOpenModalFunction) => () => {
+    openModal(() => {
       if (this.inputRef.current) {
         this.inputRef.current.focus();
       }
@@ -95,7 +95,7 @@ class App extends Component<{}, AppState> {
     });
   };
 
-  handleSubmit = (close: CloseOpenModalFunction) => () => {
+  handleSubmit = (closeModal: CloseOpenModalFunction) => () => {
     this.setState(
       state => {
         const lastPage = state.pages[state.pages.length - 1];
@@ -111,7 +111,7 @@ class App extends Component<{}, AppState> {
         };
       },
       () => {
-        close();
+        closeModal();
         this.handlePageClick(this.state.pages.slice(-1)[0].id)();
       }
     );
@@ -149,13 +149,13 @@ class App extends Component<{}, AppState> {
         <div>
           <div className="outline">
             <Modal
-              render={({ openModal: open }) => (
-                <button onClick={this.handleNewPageClick(open)}>
+              render={({ openModal }) => (
+                <button onClick={this.handleNewPageClick(openModal)}>
                   New Page
                 </button>
               )}
             >
-              {({ closeModal: close }) => (
+              {({ closeModal }) => (
                 <div className="Form">
                   <input
                     type="text"
@@ -164,7 +164,7 @@ class App extends Component<{}, AppState> {
                     ref={this.inputRef}
                     required
                   />
-                  <button onClick={this.handleSubmit(close)}>
+                  <button onClick={this.handleSubmit(closeModal)}>
                     Create New Page
                   </button>
                 </div>
