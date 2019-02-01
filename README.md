@@ -1,4 +1,4 @@
-![Task](https://imgur.com/a/9QqaEPU)
+![Task](https://i.imgur.com/nl5xU5m.png)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
