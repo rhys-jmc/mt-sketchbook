@@ -1,4 +1,4 @@
-![Task](https://lh4.googleusercontent.com/LiUrMa7bCvsjSqCtlBvIH5vcNzIyuKVbWTuIG0a1L8RlBNrpVepmyoo76NTvPy57mqoR_Gw5kQ9S7MIwPOgK=w2880-h1642-rw)
+![Task](https://imgur.com/a/9QqaEPU)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
