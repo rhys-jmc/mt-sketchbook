@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent, RefObject } from "react";
+import React, { Component, ChangeEvent, RefObject, EventHandler } from "react";
 import Canvas, { OnMouseUp } from "./Canvas";
 import Modal, { CloseOpenModalFunction } from "./Modal";
 import PageListItem from "./PageListItem";
@@ -17,9 +17,9 @@ class App extends Component<{}, AppState> {
 
   inputRef: RefObject<HTMLInputElement> = React.createRef();
 
-  handleChange = (name: keyof AppState) => ({
-    target: { value }
-  }: ChangeEvent<HTMLInputElement>) => {
+  handleChange = (
+    name: keyof AppState
+  ): EventHandler<ChangeEvent<HTMLInputElement>> => ({ target: { value } }) => {
     this.setState(prevState => ({ ...prevState, [name]: value }));
   };
 
@@ -33,6 +33,7 @@ class App extends Component<{}, AppState> {
           imageData
         };
 
+        // replace existing page with new image data
         const newPages = [
           ...pages.slice(0, index),
           newPage,
