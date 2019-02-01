@@ -1,4 +1,4 @@
-import React, { ReactNode, Component } from "react";
+import React, { Component, ReactNode } from "react";
 import "./Modal.css";
 
 export type CloseOpenModalFunction = (callback?: () => void) => void;

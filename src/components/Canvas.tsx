@@ -1,5 +1,5 @@
 import React, { Component, MouseEvent, RefObject } from "react";
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants";
 
 export type OnMouseUp = (imageData: ImageData) => void;
 

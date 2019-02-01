@@ -1,10 +1,10 @@
-import React, { Component, ChangeEvent, RefObject, MouseEvent } from "react";
+import React, { Component, ChangeEvent, RefObject } from "react";
+import Canvas, { OnMouseUp } from "./Canvas";
 import Modal, { CloseOpenModalFunction } from "./Modal";
 import PageListItem from "./PageListItem";
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./constants";
-import { Page } from "./types";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants";
+import { Page } from "../types";
 import "./App.css";
-import Canvas, { OnMouseUp } from "./Canvas";
 
 interface AppState {
   activePageId?: number;
@@ -26,7 +26,7 @@ class App extends Component<{}, AppState> {
   handleMouseUp: OnMouseUp = imageData => {
     this.setState(({ pages, ...prevState }) => {
       if (typeof prevState.activePageId !== "undefined") {
-        const index = prevState.activePageId || 0;
+        const index = prevState.activePageId;
 
         const newPage = {
           ...pages[index],
