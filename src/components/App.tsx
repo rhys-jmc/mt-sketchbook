@@ -12,6 +12,7 @@ import PageListItem from "./PageListItem";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants";
 import { Page } from "../types";
 import "./App.css";
+import PageList from "./PageList";
 
 interface AppState {
   activePageId?: number;
@@ -68,7 +69,9 @@ class App extends Component<{}, AppState> {
 
   handleSubmit = (
     closeModal: CloseOpenModalFunction
-  ): FormEventHandler<HTMLFormElement> => () => {
+  ): FormEventHandler<HTMLFormElement> => event => {
+    event.preventDefault();
+
     this.setState(
       state => {
         const lastPage = state.pages[state.pages.length - 1];
@@ -92,55 +95,62 @@ class App extends Component<{}, AppState> {
 
   render() {
     return (
-      <div className="Container">
-        <div>
+      <>
+        <h1>Sketchbook</h1>
+        <div className="Container">
           <div className="outline">
-            <Modal
-              render={({ openModal }) => (
-                <button onClick={this.handleNewPageClick(openModal)}>
-                  + New Page
-                </button>
-              )}
-            >
-              {({ closeModal }) => {
-                const submit = this.handleSubmit(closeModal);
+            <div>
+              <Modal
+                render={({ openModal }) => (
+                  <button
+                    className="btn large primary"
+                    onClick={this.handleNewPageClick(openModal)}
+                  >
+                    + New Page
+                  </button>
+                )}
+              >
+                {({ closeModal }) => {
+                  const submit = this.handleSubmit(closeModal);
 
-                return (
-                  <form className="Form" onSubmit={submit}>
-                    <input
-                      type="text"
-                      value={this.state.newPage}
-                      onChange={this.handleChange("newPage")}
-                      ref={this.inputRef}
-                      pattern={
-                        this.state.pages.length
-                          ? `^(?:(?!(^${this.state.pages
-                              .map(({ label }) => label)
-                              .join("$)|(^")}$)).)*$`
-                          : undefined
-                      }
-                      required
-                    />
-                    <button type="submit">Create New Page</button>
-                  </form>
-                );
-              }}
-            </Modal>
-          </div>
-          <div className="outline">
-            <ul>
-              {this.state.pages.map(({ id, label }) => (
-                <PageListItem
-                  key={id}
-                  isActive={id === this.state.activePageId}
-                  label={label}
-                  onClick={this.handlePageClick(id)}
+                  return (
+                    <form className="Form" onSubmit={submit}>
+                      <label htmlFor="page-name">Page Name:</label>
+                      <input
+                        autoComplete="off"
+                        name="page-name"
+                        id="page-name"
+                        type="text"
+                        value={this.state.newPage}
+                        onChange={this.handleChange("newPage")}
+                        ref={this.inputRef}
+                        pattern={
+                          this.state.pages.length
+                            ? `^(?:(?!(^${this.state.pages
+                                .map(({ label }) => label)
+                                .join("$)|(^")}$)).)*$`
+                            : undefined
+                        }
+                        required
+                      />
+                      <button className="large primary" type="submit">
+                        Create New Page
+                      </button>
+                    </form>
+                  );
+                }}
+              </Modal>
+            </div>
+            {typeof this.state.activePageId !== "undefined" && (
+              <div>
+                <PageList
+                  pages={this.state.pages}
+                  activePageId={this.state.activePageId}
+                  onPageClick={this.handlePageClick}
                 />
-              ))}
-            </ul>
+              </div>
+            )}
           </div>
-        </div>
-        <div className="CanvasContainer outline">
           {typeof this.state.activePageId !== "undefined" && (
             <Canvas
               imageData={this.state.pages[this.state.activePageId].imageData}
@@ -148,7 +158,7 @@ class App extends Component<{}, AppState> {
             />
           )}
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import React, { Component, ReactNode, KeyboardEventHandler } from "react";
 import "./Modal.css";
 
 export type CloseOpenModalFunction = (callback?: () => void) => void;
@@ -19,6 +19,20 @@ interface ModalState {
 
 export default class Modal extends Component<ModalProps, ModalState> {
   state = { open: false };
+
+  componentDidMount() {
+    document.addEventListener("keyup", this.handleKeyUp);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keyup", this.handleKeyUp);
+  }
+
+  handleKeyUp = (ev: KeyboardEvent) => {
+    if (ev.key === "Escape") {
+      this.closeModal();
+    }
+  };
 
   closeModal: CloseOpenModalFunction = () => {
     this.setState({ open: false });

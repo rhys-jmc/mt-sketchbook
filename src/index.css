@@ -1,3 +1,15 @@
+:root {
+  --primary: #034bf1;
+  --secondary: #ff7400;
+  --page: #fffbf3;
+  --background: #ffe258;
+  --border: #ffaa00;
+}
+
+* {
+  outline: 0;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,6 +18,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--page);
 }
 
 code {
@@ -13,10 +26,66 @@ code {
     monospace;
 }
 
-body .outline {
-  border: 1px solid;
+.outline {
+  margin: 0 32px 32px;
 }
 
-.active {
-  background: rgba(0, 0, 0, 0.25);
+canvas {
+  border: 4px solid var(--border);
+  background-color: white;
+}
+
+h1 {
+  text-align: center;
+  color: var(--primary);
+}
+
+button {
+  border: 0;
+  font-size: 0.75em;
+  padding: 6px 12px;
+  width: 100%;
+  white-space: nowrap;
+  background-color: var(--background);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+button:not(:disabled):hover {
+  cursor: pointer;
+  filter: brightness(105%);
+  transform: translateY(-2px);
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+
+button:active,
+button:focus {
+  transform: translateY(0px);
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+button.large {
+  font-size: 1.125em;
+  padding: 8px 16px;
+}
+
+button.primary {
+  color: white;
+  background-color: var(--primary);
+}
+
+button:disabled {
+  color: gray;
+}
+
+label {
+  line-height: 150%;
+}
+
+input {
+  padding: 4px 8px;
+  font-size: 1.25em;
+  margin-bottom: 8px;
 }

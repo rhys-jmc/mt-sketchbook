@@ -1,4 +1,5 @@
 import React, { MouseEventHandler } from "react";
+import classnames from "classnames";
 import "./PageListItem.css";
 
 interface PageListItemProps {
@@ -8,7 +9,13 @@ interface PageListItemProps {
 }
 
 export default ({ isActive, label, onClick }: PageListItemProps) => (
-  <li className={`PageListItem${isActive ? " active" : ""}`}>
-    <button onClick={onClick}>{label}</button>
+  <li className="PageListItem">
+    <button
+      className={classnames("ItemButton", isActive && "ItemButtonActive")}
+      onClick={onClick}
+      disabled={isActive}
+    >
+      {label}
+    </button>
   </li>
 );

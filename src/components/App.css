@@ -4,11 +4,12 @@
 
 .Container {
   display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.CanvasContainer {
-  flex: 1;
-  text-align: center;
+.Container > * {
+  flex: 0;
 }
 
 .Form {

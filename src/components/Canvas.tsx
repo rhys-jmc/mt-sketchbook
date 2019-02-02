@@ -82,7 +82,6 @@ export default class Canvas extends Component<CanvasProps, CanvasState> {
 
     return (
       <canvas
-        className="outline"
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
         ref={this.canvasRef}
