@@ -22,6 +22,7 @@ Should open browser to [http://localhost:3000](http://localhost:3000). If not, n
 
 ## Implementation limitations
 
+- Drawing issues on mobile due to page scrolling
 - Relying on create-react-app
 - Deployed to github-pages
 - Styling solution would struggle in a larger app
