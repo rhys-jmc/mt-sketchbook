@@ -17,6 +17,8 @@ Should open browser to [http://localhost:3000](http://localhost:3000). If not, n
 - Drawings are not erasable
 - No drawing customisation
 - Drawings are not saved, only stored for the session
+- Not responsive
+- Relies on some CSS spec that may not work on potential browser targets (flex, brightness())
 
 ## Implementation limitations
 
