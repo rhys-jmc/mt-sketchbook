@@ -2,6 +2,7 @@ import React, {
   Component,
   ChangeEvent,
   EventHandler,
+  FormEventHandler,
   KeyboardEventHandler,
   RefObject
 } from "react";
@@ -27,14 +28,6 @@ class App extends Component<{}, AppState> {
     name: keyof AppState
   ): EventHandler<ChangeEvent<HTMLInputElement>> => ({ target: { value } }) => {
     this.setState(prevState => ({ ...prevState, [name]: value }));
-  };
-
-  handleKeyPress = (
-    submit: () => void
-  ): KeyboardEventHandler<HTMLDivElement> => event => {
-    if (event.key === "Enter") {
-      submit();
-    }
   };
 
   handleMouseUp: OnMouseUp = imageData => {
@@ -73,7 +66,9 @@ class App extends Component<{}, AppState> {
     this.setState({ activePageId: id });
   };
 
-  handleSubmit = (closeModal: CloseOpenModalFunction) => () => {
+  handleSubmit = (
+    closeModal: CloseOpenModalFunction
+  ): FormEventHandler<HTMLFormElement> => () => {
     this.setState(
       state => {
         const lastPage = state.pages[state.pages.length - 1];
@@ -111,19 +106,23 @@ class App extends Component<{}, AppState> {
                 const submit = this.handleSubmit(closeModal);
 
                 return (
-                  <div
-                    className="Form"
-                    onKeyPress={this.handleKeyPress(submit)}
-                  >
+                  <form className="Form" onSubmit={submit}>
                     <input
                       type="text"
                       value={this.state.newPage}
                       onChange={this.handleChange("newPage")}
                       ref={this.inputRef}
+                      pattern={
+                        this.state.pages.length
+                          ? `^(?:(?!(^${this.state.pages
+                              .map(({ label }) => label)
+                              .join("$)|(^")}$)).)*$`
+                          : undefined
+                      }
                       required
                     />
-                    <button onClick={submit}>Create New Page</button>
-                  </div>
+                    <button type="submit">Create New Page</button>
+                  </form>
                 );
               }}
             </Modal>
