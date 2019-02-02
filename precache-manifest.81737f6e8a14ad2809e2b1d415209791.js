@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/mt-sketchbook/static/js/runtime~main.e2b636a3.js"
   },
   {
-    "revision": "2be56504bb92691ac759",
-    "url": "/mt-sketchbook/static/js/main.2be56504.chunk.js"
+    "revision": "0c84c145d53e40c7b1f2",
+    "url": "/mt-sketchbook/static/js/main.0c84c145.chunk.js"
   },
   {
     "revision": "d1616ff908759916739a",
     "url": "/mt-sketchbook/static/js/1.d1616ff9.chunk.js"
   },
   {
-    "revision": "2be56504bb92691ac759",
-    "url": "/mt-sketchbook/static/css/main.dda6ddd1.chunk.css"
+    "revision": "0c84c145d53e40c7b1f2",
+    "url": "/mt-sketchbook/static/css/main.2c647302.chunk.css"
   },
   {
-    "revision": "bc7a07b18ee8907b1f328ca82a9d0ad7",
+    "revision": "ae4ca8e35aac0548b1c4b90b09192e16",
     "url": "/mt-sketchbook/index.html"
   }
 ];
