@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/mt-sketchbook/precache-manifest.f3ea0256f22d9eab9d2ec0fec1a1d4a4.js"
+  "/mt-sketchbook/precache-manifest.643dfdc40f6e9ca93a986ffc293d2cce.js"
 );
 
 workbox.clientsClaim();
