@@ -1,4 +1,10 @@
-import React, { Component, ChangeEvent, RefObject, EventHandler } from "react";
+import React, {
+  Component,
+  ChangeEvent,
+  EventHandler,
+  KeyboardEventHandler,
+  RefObject
+} from "react";
 import Canvas, { OnMouseUp } from "./Canvas";
 import Modal, { CloseOpenModalFunction } from "./Modal";
 import PageListItem from "./PageListItem";
@@ -21,6 +27,14 @@ class App extends Component<{}, AppState> {
     name: keyof AppState
   ): EventHandler<ChangeEvent<HTMLInputElement>> => ({ target: { value } }) => {
     this.setState(prevState => ({ ...prevState, [name]: value }));
+  };
+
+  handleKeyPress = (
+    submit: () => void
+  ): KeyboardEventHandler<HTMLDivElement> => event => {
+    if (event.key === "Enter") {
+      submit();
+    }
   };
 
   handleMouseUp: OnMouseUp = imageData => {
@@ -89,24 +103,29 @@ class App extends Component<{}, AppState> {
             <Modal
               render={({ openModal }) => (
                 <button onClick={this.handleNewPageClick(openModal)}>
-                  New Page
+                  + New Page
                 </button>
               )}
             >
-              {({ closeModal }) => (
-                <div className="Form">
-                  <input
-                    type="text"
-                    value={this.state.newPage}
-                    onChange={this.handleChange("newPage")}
-                    ref={this.inputRef}
-                    required
-                  />
-                  <button onClick={this.handleSubmit(closeModal)}>
-                    Create New Page
-                  </button>
-                </div>
-              )}
+              {({ closeModal }) => {
+                const submit = this.handleSubmit(closeModal);
+
+                return (
+                  <div
+                    className="Form"
+                    onKeyPress={this.handleKeyPress(submit)}
+                  >
+                    <input
+                      type="text"
+                      value={this.state.newPage}
+                      onChange={this.handleChange("newPage")}
+                      ref={this.inputRef}
+                      required
+                    />
+                    <button onClick={submit}>Create New Page</button>
+                  </div>
+                );
+              }}
             </Modal>
           </div>
           <div className="outline">
