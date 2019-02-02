@@ -1,4 +1,10 @@
-import React, { Component, MouseEvent, RefObject } from "react";
+import React, {
+  Component,
+  MouseEvent,
+  RefObject,
+  TouchEventHandler,
+  MouseEventHandler
+} from "react";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants";
 
 export type OnMouseUp = (imageData: ImageData) => void;
@@ -35,7 +41,25 @@ export default class Canvas extends Component<CanvasProps, CanvasState> {
   getCanvasContext = () =>
     this.canvasRef.current && this.canvasRef.current.getContext("2d");
 
-  handleMouseDown = ({ pageX, pageY }: MouseEvent<HTMLCanvasElement>) => {
+  blockScrolling = (event: TouchEvent) => {
+    event.preventDefault();
+  };
+
+  startScrollingBlock = () => {
+    document.addEventListener("touchstart", this.blockScrolling, {
+      passive: false
+    });
+    document.addEventListener("touchmove", this.blockScrolling, {
+      passive: false
+    });
+  };
+
+  stopScrollingBlock = () => {
+    document.removeEventListener("touchstart", this.blockScrolling);
+    document.removeEventListener("touchmove", this.blockScrolling);
+  };
+
+  handleStart = ({ pageX, pageY }: { pageX: number; pageY: number }) => {
     const { offsetLeft, offsetTop } = this.currentCanvasRef;
     const context = this.getCanvasContext();
 
@@ -47,7 +71,7 @@ export default class Canvas extends Component<CanvasProps, CanvasState> {
     }
   };
 
-  handleMouseMove = ({ pageX, pageY }: MouseEvent<HTMLCanvasElement>) => {
+  handleMove = ({ pageX, pageY }: { pageX: number; pageY: number }) => {
     if (this.state.drawing) {
       const { offsetLeft, offsetTop } = this.currentCanvasRef;
       const context = this.getCanvasContext();
@@ -59,7 +83,7 @@ export default class Canvas extends Component<CanvasProps, CanvasState> {
     }
   };
 
-  handleMouseUp = () => {
+  handleEnd = () => {
     this.setState({ drawing: false }, () => {
       const context = this.getCanvasContext();
 
@@ -71,6 +95,34 @@ export default class Canvas extends Component<CanvasProps, CanvasState> {
         );
       }
     });
+  };
+
+  handleMouseDown: MouseEventHandler<HTMLCanvasElement> = ({ pageX, pageY }) =>
+    this.handleStart({ pageX, pageY });
+
+  handleMouseMove: MouseEventHandler<HTMLCanvasElement> = ({ pageX, pageY }) =>
+    this.handleMove({ pageX, pageY });
+
+  handleMouseUp: MouseEventHandler<HTMLCanvasElement> = () => this.handleEnd();
+
+  handleTouchStart: TouchEventHandler<HTMLCanvasElement> = ({ touches }) => {
+    const { pageX, pageY } = touches[0];
+
+    this.startScrollingBlock();
+
+    return this.handleStart({ pageX, pageY });
+  };
+
+  handleTouchMove: TouchEventHandler<HTMLCanvasElement> = ({ touches }) => {
+    const { pageX, pageY } = touches[0];
+
+    return this.handleMove({ pageX, pageY });
+  };
+
+  handleTouchEnd: TouchEventHandler<HTMLCanvasElement> = () => {
+    this.stopScrollingBlock();
+
+    this.handleEnd();
   };
 
   render() {
@@ -88,6 +140,9 @@ export default class Canvas extends Component<CanvasProps, CanvasState> {
         onMouseDown={this.handleMouseDown}
         onMouseMove={this.handleMouseMove}
         onMouseUp={this.handleMouseUp}
+        onTouchStart={this.handleTouchStart}
+        onTouchMove={this.handleTouchMove}
+        onTouchEnd={this.handleTouchEnd}
       />
     );
   }
