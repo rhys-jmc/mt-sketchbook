@@ -4,12 +4,12 @@
 
 .Container {
   display: flex;
-  align-items: flex-start;
   justify-content: center;
 }
 
 .Container > * {
   flex: 0;
+  margin: 0 16px;
 }
 
 .Form {

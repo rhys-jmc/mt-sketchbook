@@ -2,8 +2,50 @@ https://vorks.github.io/mt-sketchbook/
 
 # Getting Started
 
-`npm install`
-`npm start`
+## `npm install`
+
+Should install all npm packages.
+
+## `npm start`
+
+Should open browser to [http://localhost:3000](http://localhost:3000). If not, navigate to it manually.
+
+# Known limitations
+
+## App functionality limitations
+
+- Drawings are not erasable
+- No drawing customisation
+- Drawings are not saved, only stored for the session
+
+## Implementation limitations
+
+- Relying on create-react-app
+- Deployed to github-pages
+- Styling solution would struggle in a larger app
+
+# Potential improvements
+
+## App funcationality improvements
+
+- Responsive design
+- Customisable drawing (colors, sizes, shapes, etc.)
+- Undo/redo
+- Eraser
+- Save drawings / sketchbook
+- Accounts
+- URL/id/name per page
+- Page permissions (private, public, unlisted)
+- Shareable pages
+- Page notes
+
+## Implementation improvements
+
+- SSR
+- Serverless
+- CSS in JS / other react/js css library/solution
+
+# Task
 
 ![Task](https://i.imgur.com/nl5xU5m.png)
 

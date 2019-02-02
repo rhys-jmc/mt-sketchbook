@@ -26,10 +26,6 @@ code {
     monospace;
 }
 
-.outline {
-  margin: 0 32px 32px;
-}
-
 canvas {
   border: 4px solid var(--border);
   background-color: white;

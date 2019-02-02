@@ -9,7 +9,7 @@ import React, {
 import Canvas, { OnMouseUp } from "./Canvas";
 import Modal, { CloseOpenModalFunction } from "./Modal";
 import PageListItem from "./PageListItem";
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants";
+import { CANVAS_WIDTH, CANVAS_HEIGHT, IS_MOBILE } from "../constants";
 import { Page } from "../types";
 import "./App.css";
 import PageList from "./PageList";
@@ -97,8 +97,14 @@ class App extends Component<{}, AppState> {
     return (
       <>
         <h1>Sketchbook</h1>
-        <div className="Container">
-          <div className="outline">
+        <div
+          className="Container"
+          style={{
+            flexDirection: IS_MOBILE ? "column" : "row",
+            alignItems: IS_MOBILE ? "center" : "flex-start"
+          }}
+        >
+          <div>
             <div>
               <Modal
                 render={({ openModal }) => (
