@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/mt-sketchbook/static/css/main.1a665ab1.chunk.css"
   },
   {
-    "revision": "f02b843eb143bf132caa7e5be4f2fc7b",
+    "revision": "fbba6151952c1944289a70645f53fe8d",
     "url": "/mt-sketchbook/index.html"
   }
 ];
