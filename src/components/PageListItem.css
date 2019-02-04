@@ -12,5 +12,5 @@
 }
 
 button:disabled.ItemButtonActive {
-  color: white;
+  color: #fff;
 }
