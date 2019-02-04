@@ -23,6 +23,8 @@ Should open browser to [http://localhost:3000](http://localhost:3000). If not, n
 ## Implementation limitations
 
 - Drawing issues on mobile due to page scrolling
+- Does not handle window resize well at all in attempts to making work on mobile
+- Canvas gets pushed off screen when adding multiple pages on mobile
 - Relying on create-react-app
 - Deployed to github-pages
 - Styling solution would struggle in a larger app
