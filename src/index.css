@@ -1,13 +1,12 @@
 :root {
-  --primary: #034bf1;
-  --secondary: #ff7400;
-  --page: #fffbf3;
-  --background: #ffe258;
-  --border: #ffaa00;
+  --primary: #00cdac;
+  --secondary: #ff6700;
+  --gray: #666666;
 }
 
 * {
   outline: 0;
+  color: var(--gray);
 }
 
 html,
@@ -24,7 +23,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--page);
+  background-color: #fff;
 }
 
 code {
@@ -33,8 +32,9 @@ code {
 }
 
 canvas {
-  border: 4px solid var(--border);
-  background-color: white;
+  border: 2px solid var(--primary);
+  border-radius: 33px;
+  background-color: #fff;
 }
 
 h1 {
@@ -43,22 +43,24 @@ h1 {
 }
 
 button {
-  border: 0;
   font-size: 0.75em;
   padding: 6px 12px;
   width: 100%;
   white-space: nowrap;
-  background-color: var(--background);
+  background-color: #fff;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  border: 2px solid var(--primary);
+  border-radius: 13.5px;
+  color: var(--primary);
 }
 
 button:not(:disabled):hover {
   cursor: pointer;
   filter: brightness(105%);
   transform: translateY(-2px);
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.2),
+    1px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 2px 0px rgba(0, 0, 0, 0.12);
 }
 
 button:active,
@@ -71,15 +73,17 @@ button:focus {
 button.large {
   font-size: 1.125em;
   padding: 8px 16px;
+  border-radius: 18.5px;
 }
 
 button.primary {
-  color: white;
+  color: #fff;
   background-color: var(--primary);
+  border: none;
 }
 
 button:disabled {
-  color: gray;
+  color: var(--gray);
 }
 
 label {
@@ -89,5 +93,18 @@ label {
 input {
   padding: 4px 8px;
   font-size: 1.25em;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+  border: 2px solid var(--gray);
+  border-radius: 13.5px;
+  color: var(--gray);
+}
+
+input:active,
+input:focus {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+label {
+  margin-bottom: 2px;
 }

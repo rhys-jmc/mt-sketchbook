@@ -3,16 +3,15 @@ import React, {
   ChangeEvent,
   EventHandler,
   FormEventHandler,
-  KeyboardEventHandler,
   RefObject
 } from "react";
+import classnames from "classnames";
 import Canvas, { OnMouseUp } from "./Canvas";
 import Modal, { CloseOpenModalFunction } from "./Modal";
-import PageListItem from "./PageListItem";
+import PageList from "./PageList";
 import { CANVAS_WIDTH, CANVAS_HEIGHT, IS_MOBILE } from "../constants";
 import { Page } from "../types";
 import "./App.css";
-import PageList from "./PageList";
 
 interface AppState {
   activePageId?: number;
@@ -109,7 +108,11 @@ class App extends Component<{}, AppState> {
               <Modal
                 render={({ openModal }) => (
                   <button
-                    className="btn large primary"
+                    className={classnames(
+                      "btn",
+                      "large",
+                      !this.state.pages.length && "primary"
+                    )}
                     onClick={this.handleNewPageClick(openModal)}
                   >
                     + New Page
@@ -121,7 +124,9 @@ class App extends Component<{}, AppState> {
 
                   return (
                     <form className="Form" onSubmit={submit}>
-                      <label htmlFor="page-name">Page Name:</label>
+                      <label htmlFor="page-name">
+                        Let's give your page a name
+                      </label>
                       <input
                         autoComplete="off"
                         name="page-name"
